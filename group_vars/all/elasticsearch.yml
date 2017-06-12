@@ -8,3 +8,13 @@
 # role can interpolate the variables correctly.
 elasticsearch_version: 2.4.1
 elasticsearch_reindex_version: 1.7.5
+es_instance_name: "openstack"
+es_config:
+  node.name: "{{ container_name }}"
+  cluster.name: "openstack"
+  http.port: 9200
+  transport.tcp.port: 9300
+  node.data: true
+  node.master: true
+  network.host: "127.0.0.1"
+  discovery.type: "single-node"
