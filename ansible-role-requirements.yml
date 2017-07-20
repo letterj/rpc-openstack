@@ -17,7 +17,7 @@
 - name: os_octavia
   scm: git
   src: https://github.com/openstack/openstack-ansible-os_octavia.git
-  version: master
+  version: f8c0f7689ecd9651b27a7bf58cbdac35e0c48793
 # TODO(odyssey4me):
 # Remove this override once https://review.openstack.org/485592 merges
 # and is included in the RPC-O SHA bump.
