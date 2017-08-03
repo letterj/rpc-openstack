@@ -1,0 +1,90 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+- name: Setup neutron network
+  shell: "neutron net-create --shared --provider:physical_network tftp --provider:network_type flat tftp"
+
+- name: Setup neutron subnet
+  shell: "neutron subnet-create --name ironic-tftp --allocation-pool start=<NON_ALLOCATED_TFTP_RANGE_START>,end=<NON_ALLOCATED_TFTP_RANGE_END> --dns-nameserver=4.4.4.4 tftp <TFTP_NETWORK>/<TFTP_NETMASK>"
+
+- name: Define networks for ironic to use
+  blockinfile:
+    path: /etc/openstack_deploy/openstack_user_config.yml
+    block: | 
+      cidr_networks:
+         tftp: {{ tftp_network }}{{ tftp_netmask }}
+         ironic-ipmi: {{ ironic-ipmi_network }}{{ ironic-ipmi_netmask }}
+
+- name: Add IPs to used_ips list
+  
+- name: Setup global overrides
+  blockinfile:
+  path: /etc/etc/openstack_deploy/openstack_user_config.yml
+  block: |
+    - network:
+        container_bridge: "br-ironic-ipmi"
+        container_type: "veth"
+        container_interface: "eth_ipmi"
+        ip_from_q: "ironic-ipmi"
+        type: "raw"
+        group_binds:
+        - ironic-infra_hosts
+    - network:
+        container_bridge: "br-tftp"
+        container_type: "veth"
+        container_interface: "eth_tftp"
+        ip_from_q: "ironic-ipmi"
+        type: "flat"
+        net_name: "tftp"
+        ip_from_q: "tftp"
+        group_binds:
+        - neutron_linuxbridge_agent
+        - ironic_all
+
+- name: Define group hosts
+  blockinfile:
+  path: /etc/etc/openstack_deploy/openstack_user_config.yml
+  block: |
+    ironic-compute_hosts:
+      infra01:
+        ip: {{ infra01_mgmt_ip }}
+      infra02:
+        ip: {{ infra02_mgmt_ip }}
+      infra03:
+        ip: {{ infra03_mgmt_ip }}
+    ironic-infra_hosts:
+      infra01:
+        ip: {{ infra01_mgmt_ip }}
+      infra02:
+        ip: {{ infra02_mgmt_ip }}
+      infra03:
+        ip: {{ infra03_mgmt_ip }}
+
+- name: Setup endpoints for swift/ironic health checks
+  blockinfile:
+  path: 
+  block: |
+    extra_lb_vip_addresses:
+      - <IP address>
+    ironic_openstack_api_url: "<IP address>:{{ ironic_service_port }}"
+    ironic_swift_endpoint: "<IP address>:8080"
+
+- name: Configure neutron DHCP to be non-authorative
+  blockinfile:
+  path: /etc/openstack_deploy/user_osa_variables_overrides.yml
+  block: |
+    neutron_dhcp_config:
+      dhcp-option-force: "26,1500"
+      dhcp-ignore: "tag:!known"
+      log-facility: "/var/log/neutron/dnsmasq.log"
