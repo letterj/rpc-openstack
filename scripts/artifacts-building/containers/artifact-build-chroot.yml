@@ -96,7 +96,7 @@
     skip_tags:
       - config
     skip_handlers: True
-    image_name: "{{ role_name | replace('os_', '') | replace('rpc-role-', '') | replace('ansible-', '') }}"
+    image_name: "{{ role_name | replace('os_', '') }}"
   vars_files:
     - container-vars.yml
   pre_tasks:

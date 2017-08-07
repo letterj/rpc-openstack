@@ -24,18 +24,18 @@
   scm: git
   src: https://github.com/rcbops/rpc-role-logstash.git
   version: 5ee5229e9b80e1193b1dd4ba56ef16edf244f237
-- name: rpc-role-filebeat
+- name: filebeat
   scm: git
   src: https://github.com/rcbops/rpc-role-filebeat.git
   version: b2335fa52684c43a42e4e5bfd0bd988d51536457
-- name: rpc-role-kibana
+- name: kibana
   scm: git
   src: https://github.com/rcbops/rpc-role-kibana.git
   version: 8555c43c67f366e1dfe4beba2844adf69edb65e2
-- name: ansible-elasticsearch
+- name: elasticsearch
   scm: git
-  src: https://github.com/d34dh0r53/ansible-elasticsearch
-  version: 757d875cceb5912939af8f7712ea247a0cdc8284
+  src: https://github.com/elastic/ansible-elasticsearch
+  version: 0bffa37035652fc06b547c8ef68c2aaf15b92f80
 # TODO(odyssey4me)
 # Remove this once this SHA is included in our OSA SHA
 - name: lxc_hosts
