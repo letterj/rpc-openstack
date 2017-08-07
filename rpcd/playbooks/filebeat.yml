@@ -17,4 +17,4 @@
   hosts: all
   max_fail_percentage: 20
   roles:
-    - role: "rpc-role-filebeat"
+    - role: "filebeat"

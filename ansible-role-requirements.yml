@@ -20,7 +20,7 @@
   scm: git
   src: https://github.com/openstack/openstack-ansible-os_octavia.git
   version: f8c0f7689ecd9651b27a7bf58cbdac35e0c48793
-- name: rpc-role-logstash
+- name: logstash
   scm: git
   src: https://github.com/rcbops/rpc-role-logstash.git
   version: 5ee5229e9b80e1193b1dd4ba56ef16edf244f237

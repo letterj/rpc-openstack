@@ -129,7 +129,7 @@
   vars_files:
     - container-vars.yml
   vars:
-    image_name: "{{ role_name | replace('os_', '') | replace('rpc-role-', '') | replace('ansible-', '') }}"
+    image_name: "{{ role_name | replace('os_', '') }}"
   tasks:
     - name: Set artifact facts
       set_fact:
