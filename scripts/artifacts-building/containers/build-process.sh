@@ -140,7 +140,7 @@ openstack-ansible containers/artifact-build-chroot.yml \
 
 # Build the list of roles to build containers for
 role_list=""
-role_list="${role_list} elasticsearch kibana logstash memcached_server os_cinder"
+role_list="${role_list} kibana logstash memcached_server os_cinder"
 role_list="${role_list} os_glance os_heat os_horizon os_ironic os_keystone os_neutron"
 role_list="${role_list} os_nova os_swift os_tempest rabbitmq_server repo_server"
 role_list="${role_list} rsyslog_server"
