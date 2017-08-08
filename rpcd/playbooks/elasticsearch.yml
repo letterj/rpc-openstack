@@ -57,7 +57,8 @@
         - elasticsearch-pre-install
   roles:
     - role: "elasticsearch"
+      tags:
+        - skip_ansible_lint
 
   vars:
     is_metal: "{{ properties.is_metal | default(False) }}"
-
