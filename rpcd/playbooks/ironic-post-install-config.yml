@@ -12,17 +12,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+- name: Ironic post install config
+  hosts: ironic_all
+  tasks:
+    - name: Gather cleaning network UUID
+      shell: "neutron net-list | grep tftp | awk '{print $2}'"
+      register: neutron_tftp_network_uuid
 
-- name: Gather cleaning network UUID
-  shell: "neutron net-list | grep tftp | awk '{print $2}'"
-  register: neutron_tftp_network_uuid
+    - name: Configure the cleaning network
+      config_template:
+        src: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
+        dest: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+        config_overrides: "{{ ironic_cleaning_config }}"
 
-- name: Configure the cleaning network
-  blockinfile:
-  path: /etc/openstack_deploy/user_osa_variables_overrides.yml
-  block: |
-    ironic_ironic_conf_overrides:
-      neutron:
-        cleaning_network_uuid: {{ neutron_tftp_network_uuid }}
-      conductor:
-        automated_clean: true
+  vars:
+    ironic_cleaning_config:
+      ironic_ironic_conf_overrides:
+        neutron:
+          cleaning_network_uuid: {{ neutron_tftp_network_uuid }}
+        conductor:
+          automated_clean: true
+
+
