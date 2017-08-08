@@ -57,24 +57,7 @@
         - elasticsearch-pre-install
   roles:
     - role: "elasticsearch"
-      es_instance_name: "openstack"
-      es_data_dirs: "/var/lib/elasticsearch"
-      es_log_dir: "/var/log/elasticsearch"
-      es_config:
-        node.name: "{{ container_name }}"
-        cluster.name: "openstack"
-        http.port: "{{ elasticsearch_http_port }}"
-        transport.tcp.port: "{{ elasticsearch_tcp_port }}"
-        node.data: true
-        node.master: true
-        bootstrap.memory_lock: true
-        network.host: "{{ container_address }}"
+
   vars:
     is_metal: "{{ properties.is_metal | default(False) }}"
-    es_scripts: false
-    es_templates: false
-    es_version_lock: false
-    es_heap_size: 1g
-    es_api_host: "{{ container_address }}"
-    es_api_port: "{{ elasticsearch_http_port }}"
-    es_version: "{{ elasticsearch_version }}"
+
