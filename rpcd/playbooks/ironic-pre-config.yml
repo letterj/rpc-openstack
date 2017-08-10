@@ -26,7 +26,15 @@
         config_type: "yaml"
 
     - name: Add IPs to used_ips list
-  
+      config_template:
+        src: "/etc/openstack_deploy/openstack_user_config.yml"
+        dest: "/etc/openstack_deploy/openstack_user_config.yml"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+        config_overrides: "{{ used_ips }}"
+        config_type: "yaml"
+
     - name: Setup global overrides
       config_template:
         src: "/etc/openstack_deploy/openstack_user_config.yml"
@@ -131,3 +139,4 @@
         dhcp-option-force: "26,1500"
         dhcp-ignore: "tag:!known"
         log-facility: "/var/log/neutron/dnsmasq.log"
+    used_ips:
