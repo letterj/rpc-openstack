@@ -68,16 +68,24 @@
         config_type: "yaml"
 
     - name: Setup neutron network
-      shell: "neutron net-create --shared --provider:physical_network tftp --provider:network_type flat tftp"
+      os_network:
+        shared: yes
+        provider_physical_network: "tftp"
+        provider_network_type: "flat tftp"
+
 
     - name: Setup neutron subnet
-      shell: "neutron subnet-create --name ironic-tftp --allocation-pool start=<NON_ALLOCATED_TFTP_RANGE_START>,end=<NON_ALLOCATED_TFTP_RANGE_END> --dns-nameserver=4.4.4.4 tftp <TFTP_NETWORK>/<TFTP_NETMASK>"
+      os_subnet:
+        name: "ironic-ipmi"
+        allocation_pool_start: "<NON_ALLOCATED_TFTP_RANGE_START>"
+        allocation_pool_end: "<NON_ALLOCATED_TFTP_RANGE_END>"
+        dns_nameservers: "4.4.4.4 tftp <TFTP_NETWORK>/<TFTP_NETMASK>"
 
   vars:
     cidr_networks_ironic: 
       cidr_networks:
-           tftp: {{ tftp_network }}{{ tftp_netmask }}
-           ironic-ipmi: {{ ironic-ipmi_network }}{{ ironic-ipmi_netmask }}
+           tftp: "{{ tftp_network }}/{{ tftp_netmask }}"
+           ironic-ipmi: "{{ ironic-ipmi_network }}/{{ ironic-ipmi_netmask }}"
     ironic_networks:
       - network:
           container_bridge: "br-ironic-ipmi"
@@ -101,25 +109,25 @@
     group_hosts_ironic:
       ironic-compute_hosts:
         infra01:
-          ip: {{ infra01_mgmt_ip }}
+          ip: "{{ infra01_mgmt_ip }}"
         infra02:
-          ip: {{ infra02_mgmt_ip }}
+          ip: "{{ infra02_mgmt_ip }}"
         infra03:
-          ip: {{ infra03_mgmt_ip }}
+          ip: "{{ infra03_mgmt_ip }}"
       ironic-infra_hosts:
         infra01:
-          ip: {{ infra01_mgmt_ip }}
+          ip: "{{ infra01_mgmt_ip }}"
         infra02:
-          ip: {{ infra02_mgmt_ip }}
+          ip: "{{ infra02_mgmt_ip }}"
         infra03:
-          ip: {{ infra03_mgmt_ip }}
-   ironic_endpoint_config:
-     extra_lb_vip_addresses:
-       - <IP address>
-     ironic_openstack_api_url: "<IP address>:{{ ironic_service_port }}"
-     ironic_swift_endpoint: "<IP address>:8080"
-   ironic_neutron_dhcp_config:
-     neutron_dhcp_config:
+          ip: "{{ infra03_mgmt_ip }}"
+    ironic_endpoint_config:
+      extra_lb_vip_addresses:
+        - <IP address>
+      ironic_openstack_api_url: "<IP address>:{{ ironic_service_port }}"
+      ironic_swift_endpoint: "<IP address>:8080"
+    ironic_neutron_dhcp_config:
+      neutron_dhcp_config:
         dhcp-option-force: "26,1500"
         dhcp-ignore: "tag:!known"
         log-facility: "/var/log/neutron/dnsmasq.log"
