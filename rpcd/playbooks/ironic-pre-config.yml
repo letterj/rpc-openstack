@@ -48,14 +48,14 @@
         config_type: "yaml"
 
     - name: Setup endpoints for swift/ironic health checks
-       config_template:
-        src: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
-        dest: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
-        owner: "root"
-        group: "root"
-        mode: "0644"
-        config_overrides: "{{ ironic_endpoint_config }}"
-        config_type: "yaml"
+      config_template:
+       src: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
+       dest: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
+       owner: "root"
+       group: "root"
+       mode: "0644"
+       config_overrides: "{{ ironic_endpoint_config }}"
+       config_type: "yaml"
       
     - name: Configure neutron DHCP to be non-authorative
       config_template:
