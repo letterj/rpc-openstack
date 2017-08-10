@@ -64,7 +64,7 @@
        mode: "0644"
        config_overrides: "{{ ironic_endpoint_config }}"
        config_type: "yaml"
-      
+
     - name: Configure neutron DHCP to be non-authorative
       config_template:
         src: "/etc/openstack_deploy/user_osa_variables_overrides.yml"
