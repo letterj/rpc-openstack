@@ -90,7 +90,7 @@
         dns_nameservers: "4.4.4.4 tftp <TFTP_NETWORK>/<TFTP_NETMASK>"
 
   vars:
-    cidr_networks_ironic: 
+    cidr_networks_ironic:
       cidr_networks:
            tftp: "{{ tftp_network }}/{{ tftp_netmask }}"
            ironic-ipmi: "{{ ironic-ipmi_network }}/{{ ironic-ipmi_netmask }}"
