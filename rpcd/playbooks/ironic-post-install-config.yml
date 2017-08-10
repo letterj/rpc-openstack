@@ -32,7 +32,7 @@
     ironic_cleaning_config:
       ironic_ironic_conf_overrides:
         neutron:
-          cleaning_network_uuid: {{ neutron_tftp_network_uuid }}
+          cleaning_network_uuid: "{{ neutron_tftp_network_uuid }}"
         conductor:
           automated_clean: true
 
